@@ -4,6 +4,8 @@ import { FaClipboardList, FaListUl } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { FiLogOut } from "react-icons/fi";
 
+const URL = process.env.REACT_APP_SERVER_URL || process.env.REACT_APP_LOCAL_URL;
+
 export default function Sidebar() {
   return (
     <div className="sidebar flex flex-col justify-between bg-[#bbf7d0] h-full">
@@ -61,6 +63,7 @@ export default function Sidebar() {
           </NavLink>
         </li>
       </ul>
+      <span>{URL}</span>
       <button className="mr-3 mb-3 rounded-r-lg">
         <NavLink
           to="/my-recipes"

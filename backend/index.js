@@ -26,6 +26,52 @@ mongoose
     console.error("Error connecting to Database!", error);
   });
 
+const recipeSchema = new mongoose.Schema({
+  recipeName: String,
+  ingredients: [
+    {
+      name: String,
+      quantity: String,
+    },
+  ],
+  instructions: String,
+  prepTime: Number,
+  noOfServings: Number,
+});
+
+const Recipe = mongoose.model("Recipe", recipeSchema);
+
+server.post("/addRecipe", async (req, res) => {
+  const { recipeName, ingredients, instructions, prepTime, noOfServings } =
+    req.body;
+
+  try {
+    const newRecipe = new Recipe({
+      recipeName,
+      ingredients,
+      instructions,
+      prepTime,
+      noOfServings,
+    });
+
+    const savedRecipe = await newRecipe.save();
+    res.status(200);
+  } catch (error) {
+    console.error("Error saving recipe:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+server.get("/viewRecipe", async (req, res) => {
+  try {
+    const recipes = await Recipe.find();
+    res.json(recipes);
+  } catch (error) {
+    console.error("Error fetching recipes:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 server.get("/", (req, res) => {
   res.send("Hello! Server is Up");
 });
